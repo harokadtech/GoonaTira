@@ -55,7 +55,7 @@ angular.module('goonaTiraApp')
                     return edmDocument.nodePath.replace(/\//g, "\\"); // windows style
                 }
                 // local file
-                return "/api/files?docId=" + edmDocument.id;
+                return "/api/document/files?docId=" + edmDocument.id;
             };
 
             vm.getDocumentNodeIcon = function(node) {
@@ -208,7 +208,13 @@ angular.module('goonaTiraApp')
 
             vm.crawlFiles = function() {
             	// &sourceName=Dev4AfricaDocs&categoryName=Dev4Africa
-                $http.get('/api/crawl/filesystem?path=D:/devWin/searchdocuments/Dev4Africa').success(function(response, status, headers, config) {
+                $http.get('/api/crawl/filesystem?path=GOONA_TIRA').success(function(response, status, headers, config) {
+                    vm.crawlResult = response;
+                });
+            };
+            vm.crawlFiles2 = function() {
+            	// &sourceName=Dev4AfricaDocs&categoryName=Dev4Africa
+                $http.get('/api/crawl/filesystem?path=D:/devWin/searchdocuments/VisaDocs').success(function(response, status, headers, config) {
                     vm.crawlResult = response;
                 });
             };

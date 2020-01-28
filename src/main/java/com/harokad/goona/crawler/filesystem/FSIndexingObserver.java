@@ -110,7 +110,7 @@ public class FSIndexingObserver extends FileSystemObserver {
     public static final int MAX_FILE_SIZE_MBYTES = 50;
     
 	private void indexFileDocument(File file) {
-		log.debug("... is a file !");
+		log.debug("Indexing file -- " + file.getName());
 
 		double bytes = file.length();
 		double kilobytes = bytes / 1024;
@@ -135,13 +135,13 @@ public class FSIndexingObserver extends FileSystemObserver {
 		 try {
 		 	InputStream fileInputStream = new FileInputStream(file);
 		 	String mimeType = document.getFileExtension();
-			if (mimeType!=null && (mimeType.contains("pdf")|| mimeType.contains("png") || mimeType.contains("jpg")|| mimeType.contains("jpeg"))){
+			if (mimeType!=null && (mimeType.contains("pdf") || mimeType.contains("png") || mimeType.contains("jpg")|| mimeType.contains("jpeg"))){
 				parsedContent = tessaractOcrFile(fileInputStream, metadata);
-				log.debug("-------- Tessaract OCR : for file {} ----------------\n {} ", document.getNodePath(),  parsedContent);
+				log.debug("-------- Tessaract OCR : for file {} ----------------\n", document.getNodePath());
 			} else {
 		     	// Set the maximum length of strings returned by the parseToString method, -1 sets no limit
 		        parsedContent = TikaInstance.tika().parseToString(fileInputStream, metadata, MAX_EXTRACTED_OCR_TEXT);
-		        log.debug("-------- Normal Tika extract : for file {} -------- \n {} ", document.getNodePath(),  parsedContent);
+		        log.debug("-------- Normal Tika extract : for file {} -------- \n", document.getNodePath());
 			}
 			document.setSearchText(parsedContent);
 			
@@ -164,7 +164,7 @@ public class FSIndexingObserver extends FileSystemObserver {
 		}
 	}
 	
-	public static final int MAX_EXTRACTED_OCR_TEXT = 50000;
+	public static final int MAX_EXTRACTED_OCR_TEXT = 10000;
 	public static final int MIN_EXTRACTED_OCR_TEXT = 100;
 	private String tessaractOcrFile(InputStream  inputStream, Metadata metadata) throws IOException, SAXException, TikaException {
 	   	String suffix = "full";

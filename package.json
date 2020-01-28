@@ -1,6 +1,6 @@
 {
   "name": "goona-tira",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Description for GoonaTira",
   "private": true,
   "cacheDirectories": [
@@ -56,13 +56,17 @@
     "proxy-middleware": "0.15.0",
     "run-sequence": "1.2.2",
     "xml2js": "0.4.17",
-
     "yargs": "5.0.0"
   },
   "engines": {
     "node": "^4.3"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "gulp": "gulp", 
+    "prod": "gulp build" 
+  },
+  "dependencies": {
+    "ngx-magicsearch": "^1.0.6"
   }
 }

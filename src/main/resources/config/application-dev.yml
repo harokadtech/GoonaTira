@@ -51,8 +51,16 @@ spring:
             cluster-nodes:
             properties:
                 path:
-                  logs: target/elasticsearch/log
-                  data: target/elasticsearch/data
+                  home: ./elasticsearch/es/
+#                  logs: ./elasticsearch/log
+#                  data: ./elasticsearch/data
+                cluster:
+                  name: docs_node
+                index: 
+                  number_of_shards: 2
+            #     number_of_replicas: 0
+            #    plugin: 
+            #      mandatory: mapper-attachments
     mail:
         host: localhost
         port: 25

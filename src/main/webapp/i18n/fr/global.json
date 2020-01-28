@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "GoonaTira",
+        "title": "Goona-Tira",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
@@ -78,7 +78,8 @@
             "id": "ID"
         },
         "ribbon": {
-            "dev":"Développement"
+            "dev":"Goona Tira 2017",
+            "prod":"Goona Tira 2017"
         }
     },
     "entity": {
@@ -122,5 +123,5 @@
         "emailexists": "Email déja utilisé !",
         "idexists": "Une nouvelle entité {{entityName}} ne peut pas avoir d'ID !"
     },
-    "footer": "Ceci est votre pied de page"
+    "footer": "2016-2017 Tchimi Media S.A.R.L"
 }

@@ -69,6 +69,7 @@
 	    <form name="input_fileExtension" class="filetype-columns">
 	        <span ng-repeat="aggItem in vm.aggregations.fileExtension">
 				<input	type="checkbox" 
+						ng-checked="true"
 						ng-change="vm.submitSearchWithFilters()"
 						ng-model="aggItem.isChecked"
 						ng-init="aggItem.isChecked = true"
@@ -96,7 +97,7 @@
 	    </form>
 	
 	    </span>
-	    <button style="margin-left:5px" ng-click="vm.crawlFiles()" class="btn btn-primary btn-raised">Index Docs</button>
+	    <button style="margin-left:5px" ng-click="vm.crawlFiles()" class="btn btn-primary btn-raised">Scanner</button>
 	
 	</div>
 	

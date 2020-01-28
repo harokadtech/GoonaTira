@@ -19,16 +19,13 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./data/h2db/db/goonatira;DB_CLOSE_DELAY=-1
+        url: jdbc:postgresql://localhost:5432/GoonaTira
         name:
-        username: GoonaTira
-        password:
-    h2:
-        console:
-            enabled: false
+        username: postgres
+        password: postgres123
     jpa:
-        database-platform: com.harokad.goona.domain.util.FixedH2Dialect
-        database: H2
+        database-platform: com.harokad.goona.domain.util.FixedPostgreSQL82Dialect
+        database: POSTGRESQL
         show-sql: false
         properties:
             hibernate.cache.use_second_level_cache: true
@@ -43,17 +40,7 @@ spring:
     data:
         elasticsearch:
             cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                  home: ./data/es/
-#                  logs: ./elasticsearch/log
-#                  data: ./elasticsearch/data
-                cluster:
-                  name: docs_node
-                index: 
-                  number_of_shards: 2
-            #     number_of_replicas: 0
+            cluster-nodes: localhost:9300
     mail:
         host: localhost
         port: 25

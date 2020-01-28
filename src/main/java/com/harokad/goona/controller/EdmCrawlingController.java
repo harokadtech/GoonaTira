@@ -1,11 +1,14 @@
 package com.harokad.goona.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.harokad.goona.GoonaTiraApp;
 import com.harokad.goona.crawler.filesystem.FilesystemCrawler;
 import com.harokad.goona.crawler.url.UrlCrawler;
 import com.harokad.goona.domain.EdmDocumentFile;
@@ -47,21 +51,41 @@ public class EdmCrawlingController {
 
     @RequestMapping(value = "/filesystem", method = RequestMethod.GET, params = {"path"})
     @ResponseBody
-    public String crawlFilesystem(
+    public Callable<ResponseEntity<?>> crawlFilesystem(
             @RequestParam(value = "path") String path,
             @RequestParam(value = "edmServerHttpAddress", defaultValue = "http://127.0.0.1:8080") String edmServerHttpAddress,
             @RequestParam(value = "sourceName", defaultValue = "") String sourceName,
             @RequestParam(value = "categoryName", defaultValue = "") String categoryName,
             @RequestParam(value = "exclusionRegex", defaultValue = "") String exclusionRegex
        ) {
+  
         log.info("[crawlFilesystem] Starting crawling on path : '{}'  (exclusion = '{}')", path, exclusionRegex);
-        try {
-            filesystemCrawler.importFilesInDir(path, edmServerHttpAddress, sourceName, categoryName, exclusionRegex);
-        } catch (IOException e) {
-            log.error("[crawlFilesystem] Failed to crawl '{}' with embedded crawler", path, e);
-        }
+        String rootDir = System.getenv(GoonaTiraApp.GOONA_TIRA);
+        if(rootDir != null && path.compareTo(GoonaTiraApp.GOONA_TIRA) == 0) {
+            File file = new File(rootDir);
+            // recursive crawling
+            if (file != null && file.isDirectory()) {
+                log.debug("... is a directory !");
+                for (File subFile : file.listFiles()) {
+                	if(subFile.isDirectory()) {
+                        try {
+                            filesystemCrawler.importFilesInDir(subFile.getAbsolutePath(), edmServerHttpAddress, sourceName, subFile.getName(), exclusionRegex);
+                        } catch (IOException e) {
+                            log.error("[crawlFilesystem] Failed to crawl '{}' with embedded crawler", subFile.getPath(), e);
+                        }
+                	}
+                 }
+                // release memory
+                file = null;
+            }
+        } else
+	        try {
+	            filesystemCrawler.importFilesInDir(path, edmServerHttpAddress, sourceName, categoryName, exclusionRegex);
+	        } catch (IOException e) {
+	            log.error("[crawlFilesystem] Failed to crawl '{}' with embedded crawler", path, e);
+	        }
 
-        return "{message:OK}";
+        return () -> ResponseEntity.ok("{message:OK}");
     }
     
     @RequestMapping(value = "/stopfs", method = RequestMethod.GET, params = {"path"})

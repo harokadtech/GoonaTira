@@ -20,13 +20,16 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class, LiquibaseProperties.class })
 public class GoonaTiraApp {
 
-    private static final Logger log = LoggerFactory.getLogger(GoonaTiraApp.class);
+    public static final String GOONA_TIRA = "GOONA_TIRA";
+
+	private static final Logger log = LoggerFactory.getLogger(GoonaTiraApp.class);
 
     @Inject
     private Environment env;
@@ -60,6 +63,12 @@ public class GoonaTiraApp {
      */
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(GoonaTiraApp.class);
+        String scanDir = System.getenv(GoonaTiraApp.GOONA_TIRA);
+        if(scanDir == null) {
+        	 log.error("!!! GOONA_TIRA environnement variable not defined exiting."
+        	 		+ " Please set variable and try again. !!!");
+        	 return;
+        }
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +

@@ -65,7 +65,7 @@ public class EdmDocumentController {
         return edmAggregationsService.getAggregations(pattern);
     }
 
-    @RequestMapping(value = "/files", method = RequestMethod.GET, params = {"docId"})
+    @RequestMapping(value = "/document/files", method = RequestMethod.GET, params = {"docId"})
     @ResponseBody
     public FileSystemResource getFile(@RequestParam(value = "docId") String docId, HttpServletResponse response) throws NotFoundException, IOException {
         log.debug("Downloading file : '{}'", docId);

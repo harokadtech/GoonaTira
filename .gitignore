@@ -9,7 +9,10 @@
 node/
 node_tmp/
 node_modules/
-
+######################
+# search
+data/es
+elasticsearch/es
 ######################
 # SASS
 ######################
