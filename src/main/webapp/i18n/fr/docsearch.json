@@ -1,0 +1,9 @@
+{
+    "docsearch": {
+        "title": "Rechercher des documents",
+        "messages": {
+            "success": "<strong>Session a été invalidée!</strong>",
+            "error": "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
+        }
+    }
+}

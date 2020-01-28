@@ -1,0 +1,22 @@
+{
+    "category": {
+        "properties": {
+            "name": {
+                "type": "string",
+                "analyzer": "edm_analyzer_french"
+            },
+            "description": {
+                "type": "string",
+                "analyzer": "edm_analyzer_french"
+            },
+            "color": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "backgroundColor": {
+                "type": "string",
+                "index": "not_analyzed"
+            }
+        }
+    }
+}

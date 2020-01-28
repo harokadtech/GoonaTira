@@ -1,0 +1,104 @@
+<div>
+    <h2 data-translate="docsearch.title">Users</h2>
+    <jhi-alert></jhi-alert>
+        <div class="row">
+	<div class="col-md-9">
+	      <form id="searchForm" name="searchForm" class="navbar-form" role="search">
+	        <div class="form-group" style="width:90%;">
+	            <input name="pattern" size="64" list="suggestions" ng-model="vm.searchedPattern" type="text" class="form-control spec-input-search" placeholder="Que voulez-vous chercher ?" ng-required="true" ng-change="vm.searchPatternHaveBeenUpdated()" ng-model-options="{ debounce: 500 }"
+	            autofocus />
+	            <datalist id="suggestions">
+	                Votre navigateur ne permet pas d'afficher les suggestions, essayez en un plus récent !
+	                <option ng-value="autocompleteDocument.name" label="{{autocompleteDocument.nodePath}}" ng-repeat="autocompleteDocument in vm.autocompleteDocumentList" />
+	            </datalist>
+	            <button style="margin-left:5px" ng-click="vm.submitSearch()" class="btn btn-primary btn-raised spec-button-search" ng-disabled="searchForm.$invalid">Rechercher !</button>
+	        </div>
+	    </form>
+	    <div ng-show="vm.searchResults"><small><em class="text-muted spec-doc-found-count">{{vm.searchResults.totalHitsCount}} documents trouvés en {{vm.searchResults.tookTime}} ms</em></small></div>
+	    <br/>
+	    <div ng-repeat="searchResult in vm.searchResults.searchResults" class="spec-search-result">
+	        <a target="_blank" ng-href="{{linkToDocument(searchResult.edmDocument)}}">
+	            <span ng-bind-html="vm.getTrustedHtmlContent(searchResult.highlightedName || searchResult.edmDocument.name)" class="spec-search-title"></span>
+	        </a>
+	        <br/>
+	        <div class="doc-details">
+	                     <div ng-class="'spec-search-icon icone-sprite ' + vm.getDocumentNodeIcon(searchResult.edmDocument)"></div>
+		        	        <a style="color: #006621;" target="_blank" ng-href="{{vm.linkToDocument(searchResult.edmDocument)}}"  ng-bind-html="vm.getTrustedHtmlContent(searchResult.highlightedNodePath || searchResult.edmDocument.nodePath)">
+		        </a>
+		        	&mdash;
+	                <span class="spec-search-date">
+			          {{searchResult.edmDocument.date | date : 'dd/MM/yyyy'}}
+	                </span>
+	        <span class="spec-search-label label category" ng-style="{
+			        	'color': vm.findCategoryById(searchResult.edmDocument.categoryId).color || '#FFF',
+			        	'background-color': vm.findCategoryById(searchResult.edmDocument.categoryId).backgroundColor || '#009688'
+			        	}">
+			        	{{vm.findCategoryById(searchResult.edmDocument.categoryId).name}}
+			        </span>
+	        </div>
+	         <!-- <p ng-bind-html="vm.getTrustedHtmlContent(searchResult.highlightedDescription || searchResult.edmDocument.description)"></p>  -->
+	        <pre class="spec-search-content" ng-show="searchResult.highlightedFileContentMatching" ng-bind-html="vm.getCustomTrustedHtmlContent(searchResult.highlightedFileContentMatching)">
+		    </pre>
+	        <hr/>
+	    </div>
+	</div>
+		    <div class="col-md-3">
+	    <strong>Catégories</strong>
+	    <br/>
+	    <form name="input_category" class="filecategory-columns">
+	        <span ng-repeat="category in vm.categories"  ng-style="{'color': category.color || '#FFF',
+				       'background-color': category.backgroundColor || '#009688'}">
+				<input	type="checkbox"
+						ng-checked="true"
+						ng-change="vm.submitSearchWithFilters()"
+						ng-model="category.isChecked"
+						ng-init="category.isChecked = true"
+	                    name="{{category.name}}"
+				/>
+				{{category.name}}
+	        <br/>
+	        </span>
+	    </form>
+	
+	    <span ng-if="vm.searchedPattern">
+	
+	    <hr/>
+	
+	    <strong>Type</strong>
+	    <br/>
+	    <form name="input_fileExtension" class="filetype-columns">
+	        <span ng-repeat="aggItem in vm.aggregations.fileExtension">
+				<input	type="checkbox" 
+						ng-change="vm.submitSearchWithFilters()"
+						ng-model="aggItem.isChecked"
+						ng-init="aggItem.isChecked = true"
+	                    name="{{aggItem.key}}"
+				/>
+				{{aggItem.key}} <span class="badge">{{aggItem.docCount}}</span>
+	        <br/>
+	        </span>
+	    </form>
+	 	<hr/>
+	
+	    <strong>Date</strong>
+		<br/>
+		<form name="input_fileDate" class="filedate-columns">
+		    <span ng-repeat="aggItem in vm.aggregations.date" ng-init="currentData = vm.extractAggregationInfoFromDateAgg(aggItem.key)">
+				<input	type="radio"
+				        ng-change="vm.submitSearchWithFilters()"
+						ng-model="vm.dateAggregationFilter"
+						name="dateAggregationFilter"
+						ng-value="currentData.value"
+				/>
+				{{currentData.label}} <span class="badge">{{aggItem.docCount}}</span>
+	    <br/>
+	    </span>
+	    </form>
+	
+	    </span>
+	    <button style="margin-left:5px" ng-click="vm.crawlFiles()" class="btn btn-primary btn-raised">Index Docs</button>
+	
+	</div>
+	
+</div>
+</div>
