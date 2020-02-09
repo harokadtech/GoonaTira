@@ -4,6 +4,6 @@
     angular
         .module('goonaTiraApp')
         .constant('VERSION', "1.0")
-        .constant('DEBUG_INFO_ENABLED', false)
+        .constant('DEBUG_INFO_ENABLED', true)
 ;
 })();

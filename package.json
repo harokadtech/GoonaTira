@@ -63,8 +63,8 @@
   },
   "scripts": {
     "test": "gulp test",
-    "gulp": "gulp", 
-    "prod": "gulp build" 
+    "gulp": "gulp",
+    "prod": "gulp build"
   },
   "dependencies": {
     "ngx-magicsearch": "^1.0.6"
