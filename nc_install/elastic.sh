@@ -1,6 +1,6 @@
 #!/bin/bash
-sudo apt install openjdk-8-jdk -y
-sudo apt-get install apt-transport-https -y
+sudo apt install openjdk-11-jdk -y
+sudo apt-get install openjdk-11-jdk apt-transport-https -y
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 # Add a repository to install latest Elasticsearch 7.X on your Ubuntu system.
 add-apt-repository "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
@@ -24,7 +24,20 @@ sudo systemctl start elasticsearch.service
 sleep 2
 curl -X GET "http://localhost:8228/?pretty"
 
+curl -X PUT "http://localhost:8228/test" -d '{
+  "settings": {
+    "index": {
+      "number_of_replicas": 0,
+      "number_of_shards": 1
+    }
+  }
+}'
 
+"http://localhost:8228/?pretty"
+curl -H'Content-Type: application/json' -XPOST localhost:9200/exampleindex/doc/1 -d '{ "message": "this the value for the message field" }'
+
+
+sudo -u www-data php ./occ fulltextsearch:index
 
 sleep 2
 #sudo systemctl stop elasticsearch.service
@@ -42,11 +55,11 @@ cd ..
 ./code-server
 
 sudo apt-get install -y maven
-sudo apt install snapd snapd-xdg-open
+
 
 
 # node install
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt install nodejs
+sudo apt-get  install nodejs -y
 
 
